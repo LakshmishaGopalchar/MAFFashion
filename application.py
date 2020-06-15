@@ -7,7 +7,7 @@ from flask import Flask, jsonify
 from flask import request
 
 
-sql_conn = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER=MAFVDCBISQL03;DATABASE=MAFVCUSTDW;Trusted_Connection=yes') 
+sql_conn = pyodbc.connect('DRIVER={/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.0.so.1.1};SERVER=MAFVDCBISQL03;DATABASE=MAFVCUSTDW;Trusted_Connection=yes') 
 
 query="select B.DataAreaID as company,B.GlobalNumber,B.TransDate,D.[Item ID],D.[Subgroup Code],D.Division,D.[Category Name],D.Subgroup,Sum(B.NetAmountAED) as NetAmount,Sum(B.Qty) as Qty from FactFashionTransLine B join DimFashionStores C on B.Store = C.StoreNumber join (select DimFashionRetailProduct.Company,DimFashionRetailProduct.[Item ID],DimFashionRetailProduct.Division,DimFashionRetailProduct.[Category Name],DimFashionRetailProduct.[Subgroup Code],DimFashionRetailProduct.Subgroup from DimFashionRetailProduct group by DimFashionRetailProduct.Company, DimFashionRetailProduct.[Item ID], DimFashionRetailProduct.Division, DimFashionRetailProduct.[Category Name], DimFashionRetailProduct.[Subgroup Code], DimFashionRetailProduct.Subgroup) as D on B.ItemID = D.[Item ID] and B.DataAreaID = D.Company left join stgFashionExclusionList as E on B.GlobalNumber = E.GlobalNumber where B.GlobalNumber is not NULL and C.StoreBrandCode = 'CnB' and B.CustAccount not Like 'R%' and B.NetAmountAED > 0 and E.GlobalNumber is NULL group by B.DataAreaID, B.GlobalNumber, B.TransDate, D.[Item ID], D.[Subgroup Code], D.Division, D.[Category Name], D.Subgroup"
 
