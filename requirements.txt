@@ -1,3 +1,4 @@
+turicreate=6.3
 pyodbc==4.0.30
 pandas==0.24.2
 spacy
