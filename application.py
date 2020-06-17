@@ -17,7 +17,7 @@ cnxn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';DATABASE='+database+'
 cursor = cnxn.cursor()
 
 
-cursor.execute("select distinct replace([Item ID],'-LEGO','') ItemID  from TempRetailProduct where [Brand Code] = 'LEGO'")
+cursor.execute("select *  from TempRetailProduct where [Brand Code] = 'LEGO'")
 row = cursor.fetchone()
 while row:
     print (str(row[0]) + " " + str(row[1]))
